@@ -1,0 +1,27 @@
+version: '3.3'
+services:
+    emu-windows:
+        image: emengweb/emu-windows:latest
+        privileged: false
+        environment:
+            - CPU=2 # Default 1
+            - MEMERY=3G # Default 1G
+            - ISOFILE=virtio.iso # Default Null, Can set ios for install custem OS
+            #- USEKVM=true # if u run as VPS, disable it!!!
+        volumes:
+            - $PWD/win7.qcow2:/disk.qcow2
+            - $PWD/iso:/iso
+            - /dev/bus/usb:/dev/bus/usb
+            - /lib/modules:/lib/modules
+        ports:
+            - 60660:5900 # VNC no password
+            - 53980:3389 # RDP Administrator password
+        devices:
+            - /dev/kvm # if u run as VPS, disable it!!!
+            - /dev/vfio/vfio
+            - /dev/vfio/1
+            - /dev/bus/usb
+        ulimits:
+            memlock:
+                soft: -1
+                hard: -1
