@@ -9,9 +9,9 @@ docker run \
   `# -e ISOFILE='virtio.iso'` \
   `# -e USEKVM='true'` \
   \
-  --device /dev/kvm `# use hardware acceleration` \
+  `# --device /dev/kvm # use hardware acceleration` \
   --device /dev/vfio/vfio ` # vfio is used for PCIe passthrough` \
-  --device /dev/vfio/1 `# the vfio IOMMU group` \
+  `# --device /dev/vfio/1 # the vfio IOMMU group` \
   --ulimit memlock=-1:-1 `# so DMA can happen for the vfio passthrough` \
   --device /dev/bus/usb `# since we use usb-host device passthrough (note you can specify specific devices too)` \
   --volume /dev/bus/usb:/dev/bus/usb `# to allow for hot-plugging of USB devices` \
