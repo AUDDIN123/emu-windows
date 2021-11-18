@@ -1,4 +1,87 @@
-# emugaming
+# emu-windows
+qemu for windows on docker.
+Run / Install / Whatever use for, it's UP On You.
+
+### Request:
+./win7.qcow2 - Disk volume
+./iso - ISO Folder
+./iso/virtio.iso - emu virtio
+
+## Docker-compose
+Just Use ```docker-compose up -d```
+
+**docker-compose.yml**
+```bash
+version: '3.3'
+services:
+    emu-windows:
+        volumes:
+            - $PWD/win7.qcow2:/disk.qcow2
+            #- $PWD/iso:/iso # u don't need it, disable it
+            - /dev/bus/usb:/dev/bus/usb
+            - /lib/modules:/lib/modules
+        ports:
+            - 60660:5900 # VNC no password!!!
+            - 53980:3389 # RDP Administrator password
+        environment:
+            - CPU=2 # Default 1
+            - MEMERY=3G # Default 1G
+            - ISOFILE=virtio.iso # Default Null, Can set ios for install custem OS
+            #- USEKVM=true # if u run as VPS, disable it!!!
+        devices:
+            - /dev/kvm # if u run as VPS, disable it!!!
+            - /dev/vfio/vfio
+            - /dev/vfio/1
+            - /dev/bus/usb
+        ulimits:
+            memlock:
+                soft: -1
+                hard: -1
+        privileged: false
+        image: emengweb/emu-windows
+```
+
+## Docker-run
+
+```bash
+docker run \
+  --volume $PWD/win7.qcow2:/disk.qcow2 `# the persistent volume` \
+  --volume $PWD/iso:/iso `# the iso folder` \
+  --interactive --tty \
+  -p 60660:5900 \
+  -p 53980:3389 \
+  -e CPU='2' \
+  -e MEMERY='3G' \
+  -e ISOFILE='virtio.iso' \
+  `# -e USEKVM='true'` \
+  --detach \
+  --restart unless-stopped \
+  \
+  --device /dev/kvm `# use hardware acceleration` \
+  --device /dev/vfio/vfio ` # vfio is used for PCIe passthrough` \
+  --device /dev/vfio/1 `# the vfio IOMMU group` \
+  --ulimit memlock=-1:-1 `# so DMA can happen for the vfio passthrough` \
+  --device /dev/bus/usb `# since we use usb-host device passthrough (note you can specify specific devices too)` \
+  --volume /dev/bus/usb:/dev/bus/usb `# to allow for hot-plugging of USB devices` \
+  --volume /lib/modules:/lib/modules `# needed for loading vfio` \
+  --privileged `# needed for allowing hot-plugging of USB devices, but should be able to replace with cgroup stuff? also needed for modprobe commands` \
+  emu-windows
+```
+
+## Building Dockerfile
+```bash
+DOCKER_BUILDKIT=1 docker build -t emu-windows .
+```
+
+## Create virtual disk
+```bash
+qemu-img create -f qcow2  disk.qcow2 20G
+```
+
+
+
+
+# Inspire by lg/emugaming, many thanks!
 
 Given a QEMU Windows 10 image (you can create one as you normally would, name it `emugaming.qcow2`), this will run it on Docker with GPU/vfio passthrough. Works great for near-native gaming.
 
