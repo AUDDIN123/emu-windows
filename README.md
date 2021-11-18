@@ -15,19 +15,21 @@ Just Use ```docker-compose up -d```
 version: '3.3'
 services:
     emu-windows:
-        volumes:
-            - $PWD/win7.qcow2:/disk.qcow2
-            #- $PWD/iso:/iso # u don't need it, disable it
-            - /dev/bus/usb:/dev/bus/usb
-            - /lib/modules:/lib/modules
-        ports:
-            - 60660:5900 # VNC no password!!!
-            - 53980:3389 # RDP Administrator password
+        image: emengweb/emu-windows:latest
+        privileged: false
         environment:
             - CPU=2 # Default 1
             - MEMERY=3G # Default 1G
             - ISOFILE=virtio.iso # Default Null, Can set ios for install custem OS
             #- USEKVM=true # if u run as VPS, disable it!!!
+        volumes:
+            - $PWD/win7.qcow2:/disk.qcow2
+            - $PWD/iso:/iso
+            - /dev/bus/usb:/dev/bus/usb
+            - /lib/modules:/lib/modules
+        ports:
+            - 60660:5900 # VNC no password
+            - 53980:3389 # RDP Administrator password
         devices:
             - /dev/kvm # if u run as VPS, disable it!!!
             - /dev/vfio/vfio
@@ -37,8 +39,6 @@ services:
             memlock:
                 soft: -1
                 hard: -1
-        privileged: false
-        image: emengweb/emu-windows
 ```
 
 ## Docker-run
@@ -54,8 +54,6 @@ docker run \
   -e MEMERY='3G' \
   -e ISOFILE='virtio.iso' \
   `# -e USEKVM='true'` \
-  --detach \
-  --restart unless-stopped \
   \
   --device /dev/kvm `# use hardware acceleration` \
   --device /dev/vfio/vfio ` # vfio is used for PCIe passthrough` \
@@ -65,7 +63,7 @@ docker run \
   --volume /dev/bus/usb:/dev/bus/usb `# to allow for hot-plugging of USB devices` \
   --volume /lib/modules:/lib/modules `# needed for loading vfio` \
   --privileged `# needed for allowing hot-plugging of USB devices, but should be able to replace with cgroup stuff? also needed for modprobe commands` \
-  emu-windows
+  emengweb/emu-windows:latest
 ```
 
 ## Building Dockerfile
