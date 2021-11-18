@@ -14,8 +14,8 @@ services:
             - /dev/bus/usb:/dev/bus/usb
             - /lib/modules:/lib/modules
         ports:
-            - 60660:5900 # VNC no password
-            - 53980:3389 # RDP Administrator password
+            - 6901:5900 # VNC no password
+            - 9833:3389 # RDP Administrator password
         devices:
             - /dev/kvm # if u run as VPS, disable it!!!
             - /dev/vfio/vfio
