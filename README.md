@@ -28,8 +28,8 @@ services:
             - /dev/bus/usb:/dev/bus/usb
             - /lib/modules:/lib/modules
         ports:
-            - 60660:5900 # VNC no password
-            - 53980:3389 # RDP Administrator password
+            - 6901:5900 # VNC no password
+            - 9833:3389 # RDP Administrator password
         devices:
             - /dev/kvm # if u run as VPS, disable it!!!
             - /dev/vfio/vfio
@@ -48,8 +48,8 @@ docker run \
   --volume $PWD/win7.qcow2:/disk.qcow2 `# the persistent volume` \
   --volume $PWD/iso:/iso `# the iso folder` \
   --interactive --tty \
-  -p 60660:5900 \
-  -p 53980:3389 \
+  -p 6901:5900 \
+  -p 9833:3389 \
   -e CPU='2' \
   -e MEMERY='3G' \
   -e ISOFILE='virtio.iso' \
