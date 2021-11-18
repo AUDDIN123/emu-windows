@@ -22,7 +22,7 @@ services:
         environment:
             - CPU=2 # Default 1
             - MEMERY=3G # Default 1G
-            - ISOFILE=virtio.iso # Default Null, Can set ios for install custem OS
+            #- ISOFILE=virtio.iso # Default Null, Can set ios for install custem OS
             #- USEKVM=true # if u run as VPS, disable it!!!
         volumes:
             - $PWD/win7.qcow2:/disk.qcow2
