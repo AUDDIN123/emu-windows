@@ -2,8 +2,8 @@ docker run \
   --volume $PWD/win7.qcow2:/disk.qcow2 `# the persistent volume` \
   --volume $PWD/iso:/iso `# the iso folder` \
   --interactive --tty \
-  -p 60660:5900 \
-  -p 53980:3389 \
+  -p 6901:5900 \
+  -p 9833:3389 \
   -e CPU='2' \
   -e MEMERY='3G' \
   -e ISOFILE='virtio.iso' \
