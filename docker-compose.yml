@@ -9,7 +9,7 @@ services:
             #- ISOFILE=virtio.iso # Default Null, Can set ios for install custem OS
             #- USEKVM=true # if u run as VPS, disable it!!!
         volumes:
-            - $PWD/win7.qcow2:/disk.qcow2
+            - $PWD/win7.qcow2:/disk.qcow2 # Change Disk file name
             - $PWD/iso:/iso
             - /dev/bus/usb:/dev/bus/usb
             - /lib/modules:/lib/modules
