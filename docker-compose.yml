@@ -17,9 +17,9 @@ services:
             - 6901:5900 # VNC no password
             - 9833:3389 # RDP Administrator password
         devices:
-            - /dev/kvm # if u run as VPS, disable it!!!
+            #- /dev/kvm # if u run as VPS, disable it!!!
             - /dev/vfio/vfio
-            - /dev/vfio/1
+            #- /dev/vfio/1
             - /dev/bus/usb
         ulimits:
             memlock:
