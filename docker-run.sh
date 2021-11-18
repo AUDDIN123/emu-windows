@@ -6,7 +6,7 @@ docker run \
   -p 9833:3389 \
   -e CPU='2' \
   -e MEMERY='3G' \
-  -e ISOFILE='virtio.iso' \
+  `# -e ISOFILE='virtio.iso'` \
   `# -e USEKVM='true'` \
   \
   --device /dev/kvm `# use hardware acceleration` \
